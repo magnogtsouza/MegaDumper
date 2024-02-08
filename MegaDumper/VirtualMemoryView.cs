@@ -10,7 +10,7 @@ using System;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
-
+using System.Linq;
 namespace Mega_Dumper
 {
 
@@ -162,14 +162,9 @@ namespace Mega_Dumper
 
             while (i < pSI.lpMaximumApplicationAddress)
             {
-                if (VirtualQueryEx(hProcess, i,
-                out mbi, (uint)System.Runtime.InteropServices.Marshal.SizeOf(mbi))
-                )
+                if (VirtualQueryEx(hProcess, i, out mbi, (uint)System.Runtime.InteropServices.Marshal.SizeOf(mbi)))
                 {
                     uint alocbase = (uint)mbi.AllocationBase;
-
-
-
                     string mappedname = "";
                     if (mbi.Type == MemoryType.Mapped)
                     {
@@ -182,20 +177,15 @@ namespace Mega_Dumper
                     }
 
                     string[] prcdetails = new string[]{
-mbi.BaseAddress.ToString("X8"),mbi.AllocationProtect.ToString(),
-alocbase.ToString("X8"),mbi.Protect.ToString(),mbi.RegionSize.ToString("X8"),
-mbi.State.ToString(),mbi.Type.ToString(),mappedname};
+                        mbi.BaseAddress.ToString("X8"),mbi.AllocationProtect.ToString(),
+                        alocbase.ToString("X8"),mbi.Protect.ToString(),mbi.RegionSize.ToString("X8"),
+                        mbi.State.ToString(),mbi.Type.ToString(),mappedname};
                     ListViewItem proc = new ListViewItem(prcdetails);
                     lvvirtualmem.Items.Add(proc);
 
-
                     i = (uint)mbi.BaseAddress + (uint)mbi.RegionSize;
-
-
                 }
             }
-
-
         }
 
         void VirtualMemoryViewShown(object sender, EventArgs e)

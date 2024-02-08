@@ -257,19 +257,23 @@ namespace Mega_Dumper
                             {
                             }
                             string rname = "";
-                            try
+                            if (theProc != null)
                             {
-                                rname = theProc.MainModule.FileName.Replace("\\??\\", "");
-                                if (File.Exists(rname))
+                                try
                                 {
-                                    directoryName = Path.GetDirectoryName(rname);
-                                }
-                            }
-                            catch
-                            {
-                            }
-                            theProc.Close();
 
+                                    rname = theProc.MainModule.FileName.Replace("\\??\\", "");
+                                    if (File.Exists(rname))
+                                    {
+                                        directoryName = Path.GetDirectoryName(rname);
+                                    }
+
+                                }
+                                catch
+                                {
+                                }
+                                theProc.Close();
+                            }
                             if (!File.Exists(rname))
                             {
                                 if (Environment.OSVersion.Platform == PlatformID.Win32NT)
