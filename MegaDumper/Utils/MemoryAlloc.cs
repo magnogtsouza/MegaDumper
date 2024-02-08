@@ -93,7 +93,7 @@ namespace Native.Memory
 
         public void ReadBytes(int offset, byte[] buffer, int startIndex, int length)
         {
-        	this._ptr = new IntPtr(this._ptr.ToInt32() + offset);
+            this._ptr = new IntPtr(this._ptr.ToInt32() + offset);
             Marshal.Copy(this._ptr, buffer, startIndex, length);
         }
 
@@ -129,14 +129,14 @@ namespace Native.Memory
 
         public T ReadStruct<T>(int offset, int index)
         {
-        	this._ptr = new IntPtr((int) (offset + (Marshal.SizeOf(typeof(T)) * index)) + this._ptr.ToInt32());
-            return (T) Marshal.PtrToStructure(this._ptr, typeof(T));
+            this._ptr = new IntPtr((int)(offset + (Marshal.SizeOf(typeof(T)) * index)) + this._ptr.ToInt32());
+            return (T)Marshal.PtrToStructure(this._ptr, typeof(T));
         }
 
         public T ReadStructOffset<T>(int offset)
         {
-        	this._ptr = new IntPtr(this._ptr.ToInt32()+offset);
-            return (T) Marshal.PtrToStructure(this._ptr, typeof(T));
+            this._ptr = new IntPtr(this._ptr.ToInt32() + offset);
+            return (T)Marshal.PtrToStructure(this._ptr, typeof(T));
         }
 
         public uint ReadUInt32(int offset)
@@ -146,7 +146,7 @@ namespace Native.Memory
 
         public uint ReadUInt32(int offset, int index)
         {
-            return (uint) this.ReadInt32(offset, index);
+            return (uint)this.ReadInt32(offset, index);
         }
 
         public void Resize(int newSize)
@@ -158,28 +158,28 @@ namespace Native.Memory
 
         public void WriteByte(int offset, byte b)
         {
-            Marshal.WriteByte((IntPtr) this, offset, b);
+            Marshal.WriteByte((IntPtr)this, offset, b);
         }
 
         public void WriteBytes(int offset, byte[] b)
         {
-        	this._ptr = new IntPtr(this._ptr.ToInt32()+offset);
+            this._ptr = new IntPtr(this._ptr.ToInt32() + offset);
             Marshal.Copy(b, 0, this._ptr, b.Length);
         }
 
         public void WriteInt16(int offset, short i)
         {
-            Marshal.WriteInt16((IntPtr) this, offset, i);
+            Marshal.WriteInt16((IntPtr)this, offset, i);
         }
 
         public void WriteInt32(int offset, int i)
         {
-            Marshal.WriteInt32((IntPtr) this, offset, i);
+            Marshal.WriteInt32((IntPtr)this, offset, i);
         }
 
         public void WriteIntPtr(int offset, IntPtr i)
         {
-            Marshal.WriteIntPtr((IntPtr) this, offset, i);
+            Marshal.WriteIntPtr((IntPtr)this, offset, i);
         }
 
         public void WriteStruct<T>(T s)
@@ -194,7 +194,7 @@ namespace Native.Memory
 
         public void WriteStruct<T>(int offset, int index, T s)
         {
-        	this._ptr = new IntPtr(this._ptr.ToInt32()+(int) (offset + (Marshal.SizeOf(typeof(T)) * index)));
+            this._ptr = new IntPtr(this._ptr.ToInt32() + (int)(offset + (Marshal.SizeOf(typeof(T)) * index)));
             Marshal.StructureToPtr(s, this._ptr, false);
         }
 

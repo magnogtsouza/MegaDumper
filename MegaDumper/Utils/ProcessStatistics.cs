@@ -1,13 +1,13 @@
 using System;
-using System.Runtime.InteropServices;
 using System.Collections;
 using System.IO;
+using System.Runtime.InteropServices;
 
 namespace ProcessStatistics
 {
 
-    		        
-  /// <summary>
+
+    /// <summary>
     /// A NT status value.
     /// </summary>
     public enum NtStatus : uint
@@ -351,588 +351,588 @@ namespace ProcessStatistics
 
         MaximumNtStatus = 0xffffffff
     }
-    
-    
-public class ProcessInfo
-{
-    // Fields
-    public int basePriority;
-    public int handleCount;
-    public int mainModuleId;
-    public long pageFileBytes;
-    public long pageFileBytesPeak;
-    public long poolNonpagedBytes;
-    public long poolPagedBytes;
-    public long privateBytes;
-    public int processId;
-    public string processName;
-    public int sessionId;
-    public ArrayList threadInfoList = new ArrayList();
-    public long virtualBytes;
-    public long virtualBytesPeak;
-    public long workingSet;
-    public long workingSetPeak;
-}
 
 
-	        
-public class PStatistics
-{
-
-[DllImport("ntdll.dll")]
-public static extern NtStatus NtQueryInformationProcess([In] IntPtr ProcessHandle,
-[In] ProcessInformationClass ProcessInformationClass,
-out VmCounters ProcessInformation, [In] int ProcessInformationLength, [Optional] out int ReturnLength);
- 
-[DllImport("ntdll.dll")]
-public static extern NtStatus NtQueryInformationProcess(
-[In] IntPtr ProcessHandle, [In] ProcessInformationClass ProcessInformationClass, out int ProcessInformation, [In] int ProcessInformationLength, [Optional] out int ReturnLength);
- 
-
- 
-
-
- 
-
-[DllImport("ntdll.dll", CharSet = CharSet.Auto)]
-public static extern int NtQuerySystemInformation(
-int query, IntPtr dataPtr, int size, out int returnedSize);
-
-    
-    public enum ProcessInformationClass : int
+    public class ProcessInfo
     {
-        ProcessBasicInformation, // 0
-        ProcessQuotaLimits,
-        ProcessIoCounters,
-        ProcessVmCounters,
-        ProcessTimes,
-        ProcessBasePriority,
-        ProcessRaisePriority,
-        ProcessDebugPort,
-        ProcessExceptionPort,
-        ProcessAccessToken,
-        ProcessLdtInformation, // 10
-        ProcessLdtSize,
-        ProcessDefaultHardErrorMode,
-        ProcessIoPortHandlers,
-        ProcessPooledUsageAndLimits,
-        ProcessWorkingSetWatch,
-        ProcessUserModeIOPL,
-        ProcessEnableAlignmentFaultFixup,
-        ProcessPriorityClass,
-        ProcessWx86Information,
-        ProcessHandleCount, // 20
-        ProcessAffinityMask,
-        ProcessPriorityBoost,
-        ProcessDeviceMap,
-        ProcessSessionInformation,
-        ProcessForegroundInformation,
-        ProcessWow64Information,
-        ProcessImageFileName,
-        ProcessLUIDDeviceMapsEnabled,
-        ProcessBreakOnTermination,
-        ProcessDebugObjectHandle, // 30
-        ProcessDebugFlags,
-        ProcessHandleTracing,
-        ProcessIoPriority,
-        ProcessExecuteFlags,
-        ProcessResourceManagement,
-        ProcessCookie,
-        ProcessImageInformation,
-        ProcessCycleTime,
-        ProcessPagePriority,
-        ProcessInstrumentationCallback, // 40
-        ProcessThreadStackAllocation,
-        ProcessWorkingSetWatchEx,
-        ProcessImageFileNameWin32,
-        ProcessImageFileMapping,
-        ProcessAffinityUpdateMode,
-        ProcessMemoryAllocationMode,
-        ProcessGroupInformation,
-        ProcessTokenVirtualizationEnabled,
-        ProcessConsoleHostProcess,
-        ProcessWindowInformation, // 50
-        MaxProcessInfoClass
+        // Fields
+        public int basePriority;
+        public int handleCount;
+        public int mainModuleId;
+        public long pageFileBytes;
+        public long pageFileBytesPeak;
+        public long poolNonpagedBytes;
+        public long poolPagedBytes;
+        public long privateBytes;
+        public int processId;
+        public string processName;
+        public int sessionId;
+        public ArrayList threadInfoList = new ArrayList();
+        public long virtualBytes;
+        public long virtualBytesPeak;
+        public long workingSet;
+        public long workingSetPeak;
     }
 
-    [StructLayout(LayoutKind.Sequential)]
-    public struct VmCounters
+
+
+    public class PStatistics
     {
-        public IntPtr PeakVirtualSize;
-        public IntPtr VirtualSize;
-        public int PageFaultCount;
-        public IntPtr PeakWorkingSetSize;
-        public IntPtr WorkingSetSize;
-        public IntPtr QuotaPeakPagedPoolUsage;
-        public IntPtr QuotaPagedPoolUsage;
-        public IntPtr QuotaPeakNonPagedPoolUsage;
-        public IntPtr QuotaNonPagedPoolUsage;
-        public IntPtr PagefileUsage;
-        public IntPtr PeakPagefileUsage;
-    }
-    
-    [StructLayout(LayoutKind.Sequential)]
-internal class SystemProcessInformation
-{
-    internal int NextEntryOffset;
-    internal uint NumberOfThreads;
-    private long SpareLi1;
-    private long SpareLi2;
-    private long SpareLi3;
-    private long CreateTime;
-    private long UserTime;
-    private long KernelTime;
-    internal ushort NameLength;
-    internal ushort MaximumNameLength;
-    internal IntPtr NamePtr;
-    internal int BasePriority;
-    internal IntPtr UniqueProcessId;
-    internal IntPtr InheritedFromUniqueProcessId;
-    internal uint HandleCount;
-    internal uint SessionId;
-    internal IntPtr PageDirectoryBase;
-    internal IntPtr PeakVirtualSize;
-    internal IntPtr VirtualSize;
-    internal uint PageFaultCount;
-    internal IntPtr PeakWorkingSetSize;
-    internal IntPtr WorkingSetSize;
-    internal IntPtr QuotaPeakPagedPoolUsage;
-    internal IntPtr QuotaPagedPoolUsage;
-    internal IntPtr QuotaPeakNonPagedPoolUsage;
-    internal IntPtr QuotaNonPagedPoolUsage;
-    internal IntPtr PagefileUsage;
-    internal IntPtr PeakPagefileUsage;
-    internal IntPtr PrivatePageCount;
-    private long ReadOperationCount;
-    private long WriteOperationCount;
-    private long OtherOperationCount;
-    private long ReadTransferCount;
-    private long WriteTransferCount;
-    private long OtherTransferCount;
-}
 
- 
-[StructLayout(LayoutKind.Sequential)]
-internal class SystemThreadInformation
-{
-    private long KernelTime;
-    private long UserTime;
-    private long CreateTime;
-    private uint WaitTime;
-    internal IntPtr StartAddress;
-    internal IntPtr UniqueProcess;
-    internal IntPtr UniqueThread;
-    internal int Priority;
-    internal int BasePriority;
-    internal uint ContextSwitches;
-    internal uint ThreadState;
-    internal uint WaitReason;
-}
+        [DllImport("ntdll.dll")]
+        public static extern NtStatus NtQueryInformationProcess([In] IntPtr ProcessHandle,
+        [In] ProcessInformationClass ProcessInformationClass,
+        out VmCounters ProcessInformation, [In] int ProcessInformationLength, [Optional] out int ReturnLength);
 
-public enum ThreadState
-{
-    Initialized,
-    Ready,
-    Running,
-    Standby,
-    Terminated,
-    Wait,
-    Transition,
-    Unknown
-}
-
-public enum ThreadWaitReason
-{
-    Executive,
-    FreePage,
-    PageIn,
-    SystemAllocation,
-    ExecutionDelay,
-    Suspended,
-    UserRequest,
-    EventPairHigh,
-    EventPairLow,
-    LpcReceive,
-    LpcReply,
-    VirtualMemory,
-    PageOut,
-    Unknown
-}
+        [DllImport("ntdll.dll")]
+        public static extern NtStatus NtQueryInformationProcess(
+        [In] IntPtr ProcessHandle, [In] ProcessInformationClass ProcessInformationClass, out int ProcessInformation, [In] int ProcessInformationLength, [Optional] out int ReturnLength);
 
 
- internal class ThreadInfo
-{
-    // Fields
-    public int basePriority;
-    public int currentPriority;
-    public int processId;
-    public IntPtr startAddress;
-    public int threadId;
-    public ThreadState threadState;
-    public ThreadWaitReason threadWaitReason;
-}
 
- 
 
- internal static ThreadWaitReason GetThreadWaitReason(int value)
-{
-    switch (value)
-    {
-        case 0:
-        case 7:
-            return ThreadWaitReason.Executive;
 
-        case 1:
-        case 8:
-            return ThreadWaitReason.FreePage;
 
-        case 2:
-        case 9:
-            return ThreadWaitReason.PageIn;
 
-        case 3:
-        case 10:
-            return ThreadWaitReason.SystemAllocation;
+        [DllImport("ntdll.dll", CharSet = CharSet.Auto)]
+        public static extern int NtQuerySystemInformation(
+        int query, IntPtr dataPtr, int size, out int returnedSize);
 
-        case 4:
-        case 11:
-            return ThreadWaitReason.ExecutionDelay;
 
-        case 5:
-        case 12:
-            return ThreadWaitReason.Suspended;
-
-        case 6:
-        case 13:
-            return ThreadWaitReason.UserRequest;
-
-        case 14:
-            return ThreadWaitReason.EventPairHigh;
-
-        case 15:
-            return ThreadWaitReason.EventPairLow;
-
-        case 0x10:
-            return ThreadWaitReason.LpcReceive;
-
-        case 0x11:
-            return ThreadWaitReason.LpcReply;
-
-        case 0x12:
-            return ThreadWaitReason.VirtualMemory;
-
-        case 0x13:
-            return ThreadWaitReason.PageOut;
-    }
-    return ThreadWaitReason.Unknown;
-}
-
- 
-
-    
-public static VmCounters GetMemoryStatistics(IntPtr phandle)
-{
-
- NtStatus status;
- VmCounters counters;
- int retLength;
-
- if ((status = NtQueryInformationProcess(
-     phandle,
-     ProcessInformationClass.ProcessVmCounters,
-     out counters,
-     Marshal.SizeOf(typeof(VmCounters)),
-     out retLength
-     )) >= NtStatus.Error)
-     throw new ArgumentException(status.ToString());
-
-     return counters;
-    
-}
-
-   
-
-private static int GetNewBufferSize(int existingBufferSize, int requiredSize)
-{
-    if (requiredSize != 0)
-    {
-        return (requiredSize + 0x2800);
-    }
-    int num = existingBufferSize * 2;
-    if (num < existingBufferSize)
-    {
-        throw new OutOfMemoryException();
-    }
-    return num;
-}
-
- 
-
- 
-
-  public static ProcessInfo[] NtGetProcessInfos()
-  {
-  ProcessInfo[] processInfos;
-  int size = 0x20000;
-  int returnedSize = 0;
-  GCHandle handle = new GCHandle();
-
-   try
-   {
-        int num3;
-        do
+        public enum ProcessInformationClass : int
         {
-            byte[] buffer = new byte[size];
-            handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
-            num3 = NtQuerySystemInformation(5, handle.AddrOfPinnedObject(), size, out returnedSize);
-            if (num3 == -1073741820)
+            ProcessBasicInformation, // 0
+            ProcessQuotaLimits,
+            ProcessIoCounters,
+            ProcessVmCounters,
+            ProcessTimes,
+            ProcessBasePriority,
+            ProcessRaisePriority,
+            ProcessDebugPort,
+            ProcessExceptionPort,
+            ProcessAccessToken,
+            ProcessLdtInformation, // 10
+            ProcessLdtSize,
+            ProcessDefaultHardErrorMode,
+            ProcessIoPortHandlers,
+            ProcessPooledUsageAndLimits,
+            ProcessWorkingSetWatch,
+            ProcessUserModeIOPL,
+            ProcessEnableAlignmentFaultFixup,
+            ProcessPriorityClass,
+            ProcessWx86Information,
+            ProcessHandleCount, // 20
+            ProcessAffinityMask,
+            ProcessPriorityBoost,
+            ProcessDeviceMap,
+            ProcessSessionInformation,
+            ProcessForegroundInformation,
+            ProcessWow64Information,
+            ProcessImageFileName,
+            ProcessLUIDDeviceMapsEnabled,
+            ProcessBreakOnTermination,
+            ProcessDebugObjectHandle, // 30
+            ProcessDebugFlags,
+            ProcessHandleTracing,
+            ProcessIoPriority,
+            ProcessExecuteFlags,
+            ProcessResourceManagement,
+            ProcessCookie,
+            ProcessImageInformation,
+            ProcessCycleTime,
+            ProcessPagePriority,
+            ProcessInstrumentationCallback, // 40
+            ProcessThreadStackAllocation,
+            ProcessWorkingSetWatchEx,
+            ProcessImageFileNameWin32,
+            ProcessImageFileMapping,
+            ProcessAffinityUpdateMode,
+            ProcessMemoryAllocationMode,
+            ProcessGroupInformation,
+            ProcessTokenVirtualizationEnabled,
+            ProcessConsoleHostProcess,
+            ProcessWindowInformation, // 50
+            MaxProcessInfoClass
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct VmCounters
+        {
+            public IntPtr PeakVirtualSize;
+            public IntPtr VirtualSize;
+            public int PageFaultCount;
+            public IntPtr PeakWorkingSetSize;
+            public IntPtr WorkingSetSize;
+            public IntPtr QuotaPeakPagedPoolUsage;
+            public IntPtr QuotaPagedPoolUsage;
+            public IntPtr QuotaPeakNonPagedPoolUsage;
+            public IntPtr QuotaNonPagedPoolUsage;
+            public IntPtr PagefileUsage;
+            public IntPtr PeakPagefileUsage;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        internal class SystemProcessInformation
+        {
+            internal int NextEntryOffset;
+            internal uint NumberOfThreads;
+            private long SpareLi1;
+            private long SpareLi2;
+            private long SpareLi3;
+            private long CreateTime;
+            private long UserTime;
+            private long KernelTime;
+            internal ushort NameLength;
+            internal ushort MaximumNameLength;
+            internal IntPtr NamePtr;
+            internal int BasePriority;
+            internal IntPtr UniqueProcessId;
+            internal IntPtr InheritedFromUniqueProcessId;
+            internal uint HandleCount;
+            internal uint SessionId;
+            internal IntPtr PageDirectoryBase;
+            internal IntPtr PeakVirtualSize;
+            internal IntPtr VirtualSize;
+            internal uint PageFaultCount;
+            internal IntPtr PeakWorkingSetSize;
+            internal IntPtr WorkingSetSize;
+            internal IntPtr QuotaPeakPagedPoolUsage;
+            internal IntPtr QuotaPagedPoolUsage;
+            internal IntPtr QuotaPeakNonPagedPoolUsage;
+            internal IntPtr QuotaNonPagedPoolUsage;
+            internal IntPtr PagefileUsage;
+            internal IntPtr PeakPagefileUsage;
+            internal IntPtr PrivatePageCount;
+            private long ReadOperationCount;
+            private long WriteOperationCount;
+            private long OtherOperationCount;
+            private long ReadTransferCount;
+            private long WriteTransferCount;
+            private long OtherTransferCount;
+        }
+
+
+        [StructLayout(LayoutKind.Sequential)]
+        internal class SystemThreadInformation
+        {
+            private long KernelTime;
+            private long UserTime;
+            private long CreateTime;
+            private uint WaitTime;
+            internal IntPtr StartAddress;
+            internal IntPtr UniqueProcess;
+            internal IntPtr UniqueThread;
+            internal int Priority;
+            internal int BasePriority;
+            internal uint ContextSwitches;
+            internal uint ThreadState;
+            internal uint WaitReason;
+        }
+
+        public enum ThreadState
+        {
+            Initialized,
+            Ready,
+            Running,
+            Standby,
+            Terminated,
+            Wait,
+            Transition,
+            Unknown
+        }
+
+        public enum ThreadWaitReason
+        {
+            Executive,
+            FreePage,
+            PageIn,
+            SystemAllocation,
+            ExecutionDelay,
+            Suspended,
+            UserRequest,
+            EventPairHigh,
+            EventPairLow,
+            LpcReceive,
+            LpcReply,
+            VirtualMemory,
+            PageOut,
+            Unknown
+        }
+
+
+        internal class ThreadInfo
+        {
+            // Fields
+            public int basePriority;
+            public int currentPriority;
+            public int processId;
+            public IntPtr startAddress;
+            public int threadId;
+            public ThreadState threadState;
+            public ThreadWaitReason threadWaitReason;
+        }
+
+
+
+        internal static ThreadWaitReason GetThreadWaitReason(int value)
+        {
+            switch (value)
+            {
+                case 0:
+                case 7:
+                    return ThreadWaitReason.Executive;
+
+                case 1:
+                case 8:
+                    return ThreadWaitReason.FreePage;
+
+                case 2:
+                case 9:
+                    return ThreadWaitReason.PageIn;
+
+                case 3:
+                case 10:
+                    return ThreadWaitReason.SystemAllocation;
+
+                case 4:
+                case 11:
+                    return ThreadWaitReason.ExecutionDelay;
+
+                case 5:
+                case 12:
+                    return ThreadWaitReason.Suspended;
+
+                case 6:
+                case 13:
+                    return ThreadWaitReason.UserRequest;
+
+                case 14:
+                    return ThreadWaitReason.EventPairHigh;
+
+                case 15:
+                    return ThreadWaitReason.EventPairLow;
+
+                case 0x10:
+                    return ThreadWaitReason.LpcReceive;
+
+                case 0x11:
+                    return ThreadWaitReason.LpcReply;
+
+                case 0x12:
+                    return ThreadWaitReason.VirtualMemory;
+
+                case 0x13:
+                    return ThreadWaitReason.PageOut;
+            }
+            return ThreadWaitReason.Unknown;
+        }
+
+
+
+
+        public static VmCounters GetMemoryStatistics(IntPtr phandle)
+        {
+
+            NtStatus status;
+            VmCounters counters;
+            int retLength;
+
+            if ((status = NtQueryInformationProcess(
+                phandle,
+                ProcessInformationClass.ProcessVmCounters,
+                out counters,
+                Marshal.SizeOf(typeof(VmCounters)),
+                out retLength
+                )) >= NtStatus.Error)
+                throw new ArgumentException(status.ToString());
+
+            return counters;
+
+        }
+
+
+
+        private static int GetNewBufferSize(int existingBufferSize, int requiredSize)
+        {
+            if (requiredSize != 0)
+            {
+                return (requiredSize + 0x2800);
+            }
+            int num = existingBufferSize * 2;
+            if (num < existingBufferSize)
+            {
+                throw new OutOfMemoryException();
+            }
+            return num;
+        }
+
+
+
+
+
+        public static ProcessInfo[] NtGetProcessInfos()
+        {
+            ProcessInfo[] processInfos;
+            int size = 0x20000;
+            int returnedSize = 0;
+            GCHandle handle = new GCHandle();
+
+            try
+            {
+                int num3;
+                do
+                {
+                    byte[] buffer = new byte[size];
+                    handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+                    num3 = NtQuerySystemInformation(5, handle.AddrOfPinnedObject(), size, out returnedSize);
+                    if (num3 == -1073741820)
+                    {
+                        if (handle.IsAllocated)
+                        {
+                            handle.Free();
+                        }
+                        size = GetNewBufferSize(size, returnedSize);
+                    }
+                }
+                while (num3 == -1073741820);
+                if (num3 < 0)
+                {
+                    return null;
+                }
+                processInfos = NtGetProcessInfos(handle.AddrOfPinnedObject());
+                return processInfos;
+
+            }
+            finally
             {
                 if (handle.IsAllocated)
                 {
                     handle.Free();
                 }
-                size = GetNewBufferSize(size, returnedSize);
             }
+
         }
-        while (num3 == -1073741820);
-        if (num3 < 0)
+
+        public static ProcessInfo[] NtGetProcessInfos(IntPtr dataPtr)
         {
-        return null;
-        }
-   processInfos = NtGetProcessInfos(handle.AddrOfPinnedObject());
-   return processInfos;
+            IntPtr ptr;
+            Hashtable hashtable = new Hashtable(100);
+            uint num = 0;
+        Label_000B:
+            ptr = (IntPtr)(((uint)dataPtr) + num);
+            SystemProcessInformation structure = new SystemProcessInformation();
+            Marshal.PtrToStructure(ptr, structure);
 
-   }
-    finally
-    {
-     if (handle.IsAllocated)
-     {
-     handle.Free();
-     }
-    }
-
-  }
-
-   public static ProcessInfo[] NtGetProcessInfos(IntPtr dataPtr)
-  {
-   IntPtr ptr;
-   Hashtable hashtable = new Hashtable(100);
-   uint num = 0;
-  Label_000B:
-   ptr = (IntPtr)(((uint)dataPtr) + num);
-   SystemProcessInformation structure = new SystemProcessInformation();
-   Marshal.PtrToStructure(ptr, structure);
-   
-   ProcessInfo info = new ProcessInfo();
-    info.processId = structure.UniqueProcessId.ToInt32();
-    info.handleCount = (int) structure.HandleCount;
-    info.sessionId = (int) structure.SessionId;
-    info.poolPagedBytes = (long) structure.QuotaPagedPoolUsage;
-    info.poolNonpagedBytes = (long) structure.QuotaNonPagedPoolUsage;
-    info.virtualBytes = (long) structure.VirtualSize;
-    info.virtualBytesPeak = (long) structure.PeakVirtualSize;
-    info.workingSetPeak = (long) structure.PeakWorkingSetSize;
-    info.workingSet = (long) structure.WorkingSetSize;
-    info.pageFileBytesPeak = (long) structure.PeakPagefileUsage;
-    info.pageFileBytes = (long) structure.PagefileUsage;
-    info.privateBytes = (long) structure.PrivatePageCount;
-    info.basePriority = structure.BasePriority;
-
-  
-   hashtable[info.processId] = info;
-   try
-   {
-    ptr = (IntPtr)(((long)ptr) + Marshal.SizeOf(structure));
-   }
-   catch
-   {
-   }
-   for (int i = 0; i < structure.NumberOfThreads; i++)
-   {
-    SystemThreadInformation information2 = new SystemThreadInformation();
-    Marshal.PtrToStructure(ptr, information2);
-    ThreadInfo info2 = new ThreadInfo
-    {
-     processId = (int)information2.UniqueProcess,
-     threadId = (int)information2.UniqueThread,
-     basePriority = information2.BasePriority,
-     currentPriority = information2.Priority,
-     startAddress = information2.StartAddress,
-     threadState = (ThreadState)information2.ThreadState,
-     threadWaitReason = GetThreadWaitReason((int)information2.WaitReason)
-    };
-    info.threadInfoList.Add(info2);
-    try
-    {
-     ptr = (IntPtr)(((long)ptr) + Marshal.SizeOf(information2));
-    }
-    catch
-    {
-    }
-   }
-   if (structure.NextEntryOffset != 0)
-   {
-   num += (uint)structure.NextEntryOffset;
-   goto Label_000B;
-   }
-   
-   ProcessInfo[] array = new ProcessInfo[hashtable.Values.Count];
-   hashtable.Values.CopyTo(array, 0);
-   return array;
-  }
-
-   public static bool IsNt()
-{
-    return (Environment.OSVersion.Platform == PlatformID.Win32NT);
-}
-
- 
-public static ProcessInfo[] GetProcessInfos()
-{
-	if (IsNt())
-    {
-    return NtGetProcessInfos();
-    }
-
-    return OldGetProcessInfos();
-}
-
-[StructLayout(LayoutKind.Sequential)]
-internal class WinProcessEntry
-{
-    public const int sizeofFileName = 260;
-    public int dwSize;
-    public int cntUsage;
-    public int th32ProcessID;
-    public IntPtr th32DefaultHeapID = IntPtr.Zero;
-    public int th32ModuleID;
-    public int cntThreads;
-    public int th32ParentProcessID;
-    public int pcPriClassBase;
-    public int dwFlags;
-}
-
-[StructLayout(LayoutKind.Sequential)]
-public class WinThreadEntry
-{
-    public int dwSize;
-    public int cntUsage;
-    public int th32ThreadID;
-    public int th32OwnerProcessID;
-    public int tpBasePri;
-    public int tpDeltaPri;
-    public int dwFlags;
-}
-
- 
-
- 
+            ProcessInfo info = new ProcessInfo();
+            info.processId = structure.UniqueProcessId.ToInt32();
+            info.handleCount = (int)structure.HandleCount;
+            info.sessionId = (int)structure.SessionId;
+            info.poolPagedBytes = (long)structure.QuotaPagedPoolUsage;
+            info.poolNonpagedBytes = (long)structure.QuotaNonPagedPoolUsage;
+            info.virtualBytes = (long)structure.VirtualSize;
+            info.virtualBytesPeak = (long)structure.PeakVirtualSize;
+            info.workingSetPeak = (long)structure.PeakWorkingSetSize;
+            info.workingSet = (long)structure.WorkingSetSize;
+            info.pageFileBytesPeak = (long)structure.PeakPagefileUsage;
+            info.pageFileBytes = (long)structure.PagefileUsage;
+            info.privateBytes = (long)structure.PrivatePageCount;
+            info.basePriority = structure.BasePriority;
 
 
-[DllImport("kernel32.dll", CharSet=CharSet.Auto)]
-public static extern IntPtr CreateToolhelp32Snapshot(int flags, int processId);
-  
-[DllImport("kernel32.dll", CharSet=CharSet.Auto)]
-public static extern bool Process32First(HandleRef handle, IntPtr entry);
- 
-[DllImport("kernel32.dll", CharSet=CharSet.Auto)]
-public static extern bool Process32Next(HandleRef handle, IntPtr entry);
- 
-[DllImport("kernel32.dll", CharSet=CharSet.Auto)]
-public static extern bool Thread32First(HandleRef handle, WinThreadEntry entry);
- 
-[DllImport("kernel32.dll", CharSet=CharSet.Auto)]
-public static extern bool Thread32Next(HandleRef handle, WinThreadEntry entry);
- 
-[DllImport("kernel32.dll", CharSet=CharSet.Auto, SetLastError=true, ExactSpelling=true)]
-public static extern bool CloseHandle(HandleRef handle);
- 
-
- 
- public static ProcessInfo[] OldGetProcessInfos()
-{
-    IntPtr ptr = (IntPtr) (-1);
-    GCHandle handle = new GCHandle();
-    ArrayList list = new ArrayList();
-    Hashtable hashtable = new Hashtable();
-    try
-    {
-        ptr = CreateToolhelp32Snapshot(6, 0);
-        if (ptr == ((IntPtr) (-1)))
-        {
-        return null;
-        }
-        int num = Marshal.SizeOf(typeof(WinProcessEntry));
-        int val = num + 260;
-        int[] numArray = new int[val / 4];
-        handle = GCHandle.Alloc(numArray, GCHandleType.Pinned);
-        IntPtr ptr2 = handle.AddrOfPinnedObject();
-        Marshal.WriteInt32(ptr2, val);
-        HandleRef ref2 = new HandleRef(null, ptr);
-        if (Process32First(ref2, ptr2))
-        {
-            do
+            hashtable[info.processId] = info;
+            try
             {
-                WinProcessEntry entry = new WinProcessEntry();
-                Marshal.PtrToStructure(ptr2, entry);
-                ProcessInfo info = new ProcessInfo();
-                string path = Marshal.PtrToStringAnsi((IntPtr) (((long) ptr2) + num));
-                info.processName = Path.ChangeExtension(Path.GetFileName(path), null);
-                info.handleCount = entry.cntUsage;
-                info.processId = entry.th32ProcessID;
-                info.basePriority = entry.pcPriClassBase;
-                info.mainModuleId = entry.th32ModuleID;
-                hashtable.Add(info.processId, info);
+                ptr = (IntPtr)(((long)ptr) + Marshal.SizeOf(structure));
+            }
+            catch
+            {
+            }
+            for (int i = 0; i < structure.NumberOfThreads; i++)
+            {
+                SystemThreadInformation information2 = new SystemThreadInformation();
+                Marshal.PtrToStructure(ptr, information2);
+                ThreadInfo info2 = new ThreadInfo
+                {
+                    processId = (int)information2.UniqueProcess,
+                    threadId = (int)information2.UniqueThread,
+                    basePriority = information2.BasePriority,
+                    currentPriority = information2.Priority,
+                    startAddress = information2.StartAddress,
+                    threadState = (ThreadState)information2.ThreadState,
+                    threadWaitReason = GetThreadWaitReason((int)information2.WaitReason)
+                };
+                info.threadInfoList.Add(info2);
+                try
+                {
+                    ptr = (IntPtr)(((long)ptr) + Marshal.SizeOf(information2));
+                }
+                catch
+                {
+                }
+            }
+            if (structure.NextEntryOffset != 0)
+            {
+                num += (uint)structure.NextEntryOffset;
+                goto Label_000B;
+            }
+
+            ProcessInfo[] array = new ProcessInfo[hashtable.Values.Count];
+            hashtable.Values.CopyTo(array, 0);
+            return array;
+        }
+
+        public static bool IsNt()
+        {
+            return (Environment.OSVersion.Platform == PlatformID.Win32NT);
+        }
+
+
+        public static ProcessInfo[] GetProcessInfos()
+        {
+            if (IsNt())
+            {
+                return NtGetProcessInfos();
+            }
+
+            return OldGetProcessInfos();
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        internal class WinProcessEntry
+        {
+            public const int sizeofFileName = 260;
+            public int dwSize;
+            public int cntUsage;
+            public int th32ProcessID;
+            public IntPtr th32DefaultHeapID = IntPtr.Zero;
+            public int th32ModuleID;
+            public int cntThreads;
+            public int th32ParentProcessID;
+            public int pcPriClassBase;
+            public int dwFlags;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public class WinThreadEntry
+        {
+            public int dwSize;
+            public int cntUsage;
+            public int th32ThreadID;
+            public int th32OwnerProcessID;
+            public int tpBasePri;
+            public int tpDeltaPri;
+            public int dwFlags;
+        }
+
+
+
+
+
+
+        [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
+        public static extern IntPtr CreateToolhelp32Snapshot(int flags, int processId);
+
+        [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
+        public static extern bool Process32First(HandleRef handle, IntPtr entry);
+
+        [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
+        public static extern bool Process32Next(HandleRef handle, IntPtr entry);
+
+        [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
+        public static extern bool Thread32First(HandleRef handle, WinThreadEntry entry);
+
+        [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
+        public static extern bool Thread32Next(HandleRef handle, WinThreadEntry entry);
+
+        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true, ExactSpelling = true)]
+        public static extern bool CloseHandle(HandleRef handle);
+
+
+
+        public static ProcessInfo[] OldGetProcessInfos()
+        {
+            IntPtr ptr = (IntPtr)(-1);
+            GCHandle handle = new GCHandle();
+            ArrayList list = new ArrayList();
+            Hashtable hashtable = new Hashtable();
+            try
+            {
+                ptr = CreateToolhelp32Snapshot(6, 0);
+                if (ptr == ((IntPtr)(-1)))
+                {
+                    return null;
+                }
+                int num = Marshal.SizeOf(typeof(WinProcessEntry));
+                int val = num + 260;
+                int[] numArray = new int[val / 4];
+                handle = GCHandle.Alloc(numArray, GCHandleType.Pinned);
+                IntPtr ptr2 = handle.AddrOfPinnedObject();
                 Marshal.WriteInt32(ptr2, val);
+                HandleRef ref2 = new HandleRef(null, ptr);
+                if (Process32First(ref2, ptr2))
+                {
+                    do
+                    {
+                        WinProcessEntry entry = new WinProcessEntry();
+                        Marshal.PtrToStructure(ptr2, entry);
+                        ProcessInfo info = new ProcessInfo();
+                        string path = Marshal.PtrToStringAnsi((IntPtr)(((long)ptr2) + num));
+                        info.processName = Path.ChangeExtension(Path.GetFileName(path), null);
+                        info.handleCount = entry.cntUsage;
+                        info.processId = entry.th32ProcessID;
+                        info.basePriority = entry.pcPriClassBase;
+                        info.mainModuleId = entry.th32ModuleID;
+                        hashtable.Add(info.processId, info);
+                        Marshal.WriteInt32(ptr2, val);
+                    }
+                    while (Process32Next(ref2, ptr2));
+                }
+                WinThreadEntry structure = new WinThreadEntry();
+                structure.dwSize = Marshal.SizeOf(structure);
+                if (Thread32First(ref2, structure))
+                {
+                    do
+                    {
+                        ThreadInfo info2 = new ThreadInfo();
+                        info2.threadId = structure.th32ThreadID;
+                        info2.processId = structure.th32OwnerProcessID;
+                        info2.basePriority = structure.tpBasePri;
+                        info2.currentPriority = structure.tpBasePri + structure.tpDeltaPri;
+                        list.Add(info2);
+                    }
+                    while (Thread32Next(ref2, structure));
+                }
+                for (int i = 0; i < list.Count; i++)
+                {
+                    ThreadInfo info3 = (ThreadInfo)list[i];
+                    ProcessInfo info4 = (ProcessInfo)hashtable[info3.processId];
+                    if (info4 != null)
+                    {
+                        info4.threadInfoList.Add(info3);
+                    }
+                }
             }
-            while (Process32Next(ref2, ptr2));
-        }
-        WinThreadEntry structure = new WinThreadEntry();
-        structure.dwSize = Marshal.SizeOf(structure);
-        if (Thread32First(ref2, structure))
-        {
-            do
+            finally
             {
-                ThreadInfo info2 = new ThreadInfo();
-                info2.threadId = structure.th32ThreadID;
-                info2.processId = structure.th32OwnerProcessID;
-                info2.basePriority = structure.tpBasePri;
-                info2.currentPriority = structure.tpBasePri + structure.tpDeltaPri;
-                list.Add(info2);
+                if (handle.IsAllocated)
+                {
+                    handle.Free();
+                }
+                if (ptr != ((IntPtr)(-1)))
+                {
+                    CloseHandle(new HandleRef(null, ptr));
+                }
             }
-            while (Thread32Next(ref2, structure));
+            ProcessInfo[] array = new ProcessInfo[hashtable.Values.Count];
+            hashtable.Values.CopyTo(array, 0);
+            return array;
         }
-        for (int i = 0; i < list.Count; i++)
-        {
-            ThreadInfo info3 = (ThreadInfo) list[i];
-            ProcessInfo info4 = (ProcessInfo) hashtable[info3.processId];
-            if (info4 != null)
-            {
-                info4.threadInfoList.Add(info3);
-            }
-        }
+
+
+
+
+
+
+
     }
-    finally
-    {
-        if (handle.IsAllocated)
-        {
-            handle.Free();
-        }
-        if (ptr != ((IntPtr) (-1)))
-        {
-        CloseHandle(new HandleRef(null, ptr));
-        }
-    }
-    ProcessInfo[] array = new ProcessInfo[hashtable.Values.Count];
-    hashtable.Values.CopyTo(array, 0);
-    return array;
-}
-
- 
-
-
- 
-
- 
-}
 }

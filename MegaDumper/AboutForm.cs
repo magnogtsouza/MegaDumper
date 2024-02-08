@@ -7,34 +7,33 @@
  * To change this template use Tools | Options | Coding | Edit Standard Headers.
  */
 using System;
-using System.Drawing;
 using System.Windows.Forms;
 
 namespace Mega_Dumper
 {
-	/// <summary>
-	/// Description of AboutForm.
-	/// </summary>
-	public partial class AboutForm : Form
-	{
-		public AboutForm()
-		{
-			//
-			// The InitializeComponent() call is required for Windows Forms designer support.
-			//
-			InitializeComponent();
-			
-			//
-			// TODO: Add constructor code after the InitializeComponent() call.
-			//
-		}
-		
-		void ButtonCloseClick(object sender, EventArgs e)
-		{
-		this.Close();
-		}
-		
-	    public static void TryStart(string command)
+    /// <summary>
+    /// Description of AboutForm.
+    /// </summary>
+    public partial class AboutForm : Form
+    {
+        public AboutForm()
+        {
+            //
+            // The InitializeComponent() call is required for Windows Forms designer support.
+            //
+            InitializeComponent();
+
+            //
+            // TODO: Add constructor code after the InitializeComponent() call.
+            //
+        }
+
+        void ButtonCloseClick(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        public static void TryStart(string command)
         {
             try
             {
@@ -52,14 +51,13 @@ namespace Mega_Dumper
                     }
                 }
 
-                MessageBox.Show(ex.Message,ex.Source);
+                MessageBox.Show(ex.Message, ex.Source);
             }
         }
-		void LinkSourceforgeLinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-		{
-TryStart("http://forum.tuts4you.com/");
+        void LinkSourceforgeLinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            TryStart("http://forum.tuts4you.com/");
+        }
 
-		}
-
-	}
+    }
 }
